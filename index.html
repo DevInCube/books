@@ -27,6 +27,16 @@
 
 <body>
     <h1>Books</h1>
+    <div id="app">
+      <p>{{message}}</p>
+      <ul>
+        <li v-for="book in allBooks">
+          <span>"{{book.data.title}}"</span>
+          <span> by </span>
+          <b>{{book.author.data.title}}</b>
+        </li>
+      </ul>
+    </div>
   <script src="app.js"></script>
 </body>
 </html>
