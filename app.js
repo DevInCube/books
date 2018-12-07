@@ -22,11 +22,18 @@ async function populateReference(b, referenceKey) {
  };
 }
 
-books.get()
-   .then(toList)
-   .then(x => Promise.all(x.map(book => populateReference(book, "author"))))
-   .then(books => {
-     for (const book of books) {
-       document.write(`<br>"${book.data.title}" by <b>${book.author.data.fullname}</b>`);
-     }
-   });
+async function getAllBooks() {
+  const fbres = await books.get();
+  return Promise.all(toList(fbres).map(book => populateReference(book, "author")));
+}
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!',
+    allBooks: [],
+  },
+  mounted() {
+      getAllBooks().then(books => this.allBooks = books);
+  },
+});
