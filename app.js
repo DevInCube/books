@@ -1,30 +1,8 @@
-const firestore = firebase.firestore();
-const settings = {/* your settings... */ timestampsInSnapshots: true};
-firestore.settings(settings);
-
-const books = firestore.collection("books");
-
-function toList(fbres) {
- const mains = [];
- fbres.forEach(b => mains.push(b));
- return mains;
-}
-
-async function populateReference(b, referenceKey) {
- const sub = await b.data()[referenceKey].get();
- return {
-   id: b.id,
-   data: b.data(),
-   [referenceKey]: {
-     id: sub.id,
-     data: sub.data(),
-   },
- };
-}
-
 async function getAllBooks() {
-  const fbres = await books.get();
-  return Promise.all(toList(fbres).map(book => populateReference(book, "author")));
+  const csvUrl = `https://raw.githubusercontent.com/DevInCube/books/master/data/books.csv`;
+  const res = await fetch(csvUrl);
+  const csv = await res.text();
+  return $.csv.toObjects(csv);
 }
 
 const app = new Vue({
@@ -34,6 +12,9 @@ const app = new Vue({
     allBooks: [],
   },
   mounted() {
-      getAllBooks().then(books => this.allBooks = books);
+      getAllBooks().then(books => {
+          this.allBooks = books;
+       console.log(books);
+      });
   },
 });
