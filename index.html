@@ -20,6 +20,7 @@
           <span>"{{book.title}}"</span>
           <span> by </span>
           <b>{{book.author}}</b>
+          <img v-if="book.url" :src="book.url">
         </li>
       </ul>
     </div>
