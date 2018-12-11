@@ -8,20 +8,7 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBUM3G9BC2DHjkWYxMI5YH1NQtkd3QTU-U",
-    authDomain: "books-736ac.firebaseapp.com",
-    databaseURL: "https://books-736ac.firebaseio.com",
-    projectId: "books-736ac",
-    storageBucket: "books-736ac.appspot.com",
-    messagingSenderId: "1012059171357"
-  };
-  firebase.initializeApp(config);
-</script>
+  <script src="https://raw.githubusercontent.com/evanplaice/jquery-csv/master/src/jquery.csv.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 </head>
 
@@ -31,9 +18,9 @@
       <p>{{message}}</p>
       <ul>
         <li v-for="book in allBooks">
-          <span>"{{book.data.title}}"</span>
+          <span>"{{book.title}}"</span>
           <span> by </span>
-          <b>{{book.author.data.fullname}}</b>
+          <b>{{book.author}}</b>
         </li>
       </ul>
     </div>
