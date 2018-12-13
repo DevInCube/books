@@ -17,7 +17,7 @@
     <div id="app">
       <p>{{allBooks.length}} books available:</p>
       <ul>
-        <li v-for="book in allBooks">
+        <li v-for="book in allBooks" :class="isRented ? 'book-rented' : 'book'">
           <img v-if="book.coverUrl" :src="book.coverUrl" height="32">
           <span>"{{book.title}}"</span>
           <span> by </span>
