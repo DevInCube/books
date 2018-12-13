@@ -42,5 +42,5 @@ const app = new Vue({
 function handleTqResponse(resp) {
     const books = parseBooks(resp);
     console.log(books);
-    app.allBooks = books;
+    app.allBooks = books.filter(x => x.isAvailable);
 }
