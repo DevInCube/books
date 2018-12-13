@@ -1,18 +1,14 @@
-function makeApiCall(sheetId, query, callback) {
+function makeApiCall(sheetId, query) {
   // Note: The below spreadsheet is "Public on the web" and will work
   // with or without an OAuth token.  For a better test, replace this
   // URL with a private spreadsheet.
   const encodedQuery = encodeURIComponent(query);
-  const tqUrl = `https://docs.google.com/spreadsheets` +
-      `/d/${sheetId}/gviz/tq` +
-      `?tqx=responseHandler:handleTqResponse` +
-      `&tq=${encodedQuery}`;
+  const tqUrl = `https://docs.google.com/a/google.com` + 
+        `/spreadsheets/d/${sheetId}/gviz/tq` + 
+        `?tqx=responseHandler:handleTqResponse` + 
+        `&tq=${encodedQuery}`;
 
   document.write('<script src="' + tqUrl +'" type="text/javascript"></script>');
-    
-  function handleTqResponse(resp) {
-      callback(null, resp);
-  }
 }
 
 
@@ -39,12 +35,12 @@ const app = new Vue({
     allBooks: [],
   },
   mounted() {
-      makeApiCall(`14xSwU7g8-8F88IBdO2rhoH8PJ6BTJf0yqeThlKVX9mY/gviz`, 
-            `SELECT *`, 
-            (err, resp) => {
-                const books = parseBooks(resp);
-                this.allBooks = books;
-                console.log(books);
-            });
+      makeApiCall(`14xSwU7g8-8F88IBdO2rhoH8PJ6BTJf0yqeThlKVX9mY/gviz`, `SELECT *`);
   },
 });
+
+function handleTqResponse(resp) {
+    const books = parseBooks(resp);
+    console.log(books);
+    app.allBooks = books;
+}
