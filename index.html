@@ -26,12 +26,12 @@
 
 <body>
   <div id="app" class="container">
-    <h1 class="site-name">RA/Books: <small>rent a book</small></h1>
+    <h1 class="site-name">RA/Books <small class="hidden-xs">rent a book</small></h1>
     <hr />
     <div class="row">
       <div class="col-md-3 col-sm-12 col-xs-12">
-        <div class="row">
-          <div class="col-md-12 col-sm-6 col-xs-6 text-center ">
+        <div class="row text-center">
+          <div class="col-md-12 col-sm-6 col-xs-6">
             <img :src="user.imageUrl" class="img-circle" height="128">
             <h3>{{user.fullname}}</h3>
             <div>
@@ -40,7 +40,7 @@
             </div>
             <br />
           </div>
-          <div class="col-md-12 col-sm-6 col-xs-6 text-center ">
+          <div class="col-md-12 col-sm-6 col-xs-6 ">
             <div class="btn-group-vertical" role="group">
               <a :href="user.telegramLink" class="btn btn-primary" target="_blank">
                 <span>Contact via Telegram</span>
@@ -53,6 +53,7 @@
             </div>
           </div>
         </div>
+        <hr/>
       </div>
       <div class="col-md-8 col-sm-12 col-xs-12">
         <div class="filter-box">
