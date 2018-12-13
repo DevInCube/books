@@ -13,15 +13,16 @@
 
 <body>
     <h1>Books</h1>
+    <p><a href="https://www.goodreads.com/user/show/51764433-ruslan-hadyniak" target="_blank">Follow me on <img src="https://www.goodreads.com/assets/doodle/choice_awards_2018/desktop_gr_logo.png"></a></p>
     <div id="app">
-      <p>{{message}}</p>
+      <p>{{allBooks.length}} books available:</p>
       <ul>
         <li v-for="book in allBooks">
           <img v-if="book.coverUrl" :src="book.coverUrl" height="32">
           <span>"{{book.title}}"</span>
           <span> by </span>
           <b>{{book.author}}</b>
-          <a v-if="book.externalUrl" :href="book.externalUrl">Link</a>
+          <a v-if="book.externalUrl" :href="book.externalUrl" target="_blank">Link</a>
         </li>
       </ul>
     </div>
