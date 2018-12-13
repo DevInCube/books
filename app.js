@@ -35,7 +35,7 @@ const app = new Vue({
     allBooks: [],
   },
   mounted() {
-      makeApiCall(`14xSwU7g8-8F88IBdO2rhoH8PJ6BTJf0yqeThlKVX9mY/gviz`, `SELECT *`);
+      makeApiCall(`14xSwU7g8-8F88IBdO2rhoH8PJ6BTJf0yqeThlKVX9mY`, `SELECT *`);
   },
 });
 
