@@ -42,66 +42,48 @@
     </div>
     <hr />
     <div class="row">
-      <div class="col-md-3 col-sm-12 col-xs-12">
-        <div class="row text-center">
-          <div class="col-md-12 col-sm-6 col-xs-12">
-            <img :src="user.imageUrl" class="img-circle hidden-xs" height="96">
-            <h3>{{user.fullname}}</h3>
+      <div id="holder-box" class="col-md-4 col-md-push-8 col-sm-6 col-sm-push-6 col-xs-12">
+        <div class="media">
+          <div class="media-left">
+            <img :src="user.imageUrl" class="img-circle" height="64">
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">{{user.fullname}}</h4>
             <div>
               <span>Регіон: </span>
               <span><b>{{user.region}}</b></span>
             </div>
-            <br />
-          </div>
-          <div class="col-md-12 col-sm-6 col-xs-12">
-            <div class="btn-group-vertical hidden-xs" role="group">
-              <a :href="user.telegramLink" class="btn btn-primary text-left" target="_blank">
+            <div id="social-links" class="btn-group-horizontal" role="group">
+              <a :href="user.telegramLink" class="" target="_blank" title="Напишіть в Telegram">
                 <img :src="statics.telegramLogoUrl" height="20">
-                <span class="hidden-xs">Напишіть в Telegram</span>
               </a>
-              <a :href="user.instagramLink" class="btn btn-default" target="_blank">
+              <a :href="user.instagramLink" class="" target="_blank" title="Напишіть в Instagram">
                 <img :src="statics.instagramLogoUrl" height="20">
-                <span class="hidden-xs">Напишіть в Instagram</span>
               </a>
-              <a :href="user.goodreadsLink" class="btn btn-default" target="_blank">
+              <a :href="user.goodreadsLink" class="" target="_blank" title="Мій Goodreads">
                 <img :src="statics.goodreadsLogoUrl" height="20">
-                <span class="hidden-xs">Мій Goodreads</span>
               </a>
             </div>
-            <div class="btn-group-horizontal visible-xs" role="group">
-                <a :href="user.telegramLink" class="btn btn-primary text-left" target="_blank">
-                  <img :src="statics.telegramLogoUrl" height="20">
-                  <span class="hidden-xs">Напишіть в Telegram</span>
-                </a>
-                <a :href="user.instagramLink" class="btn btn-default" target="_blank">
-                  <img :src="statics.instagramLogoUrl" height="20">
-                  <span class="hidden-xs">Напишіть в Instagram</span>
-                </a>
-                <a :href="user.goodreadsLink" class="btn btn-default" target="_blank">
-                  <img :src="statics.goodreadsLogoUrl" height="20">
-                  <span class="hidden-xs">Мій Goodreads</span>
-                </a>
-              </div>
           </div>
         </div>
-        <hr />
       </div>
-      <div class="col-md-8 col-sm-12 col-xs-12">
-        <div class="filter-box">
-          <span>Пошук: </span>
-          <a href="#" @click="clearFilter">очистити</a>
-          <input type="search" v-model="filterString" placeholder="за автором та назвою" class="form-control">
-          <input type="checkbox" v-model="filters.showRented"><span> Показувати зайняті книги</span>
-        </div>
+      <div id="filter-box" class="col-md-8 col-md-pull-4 col-sm-6 col-sm-pull-6 col-xs-12">
+        <span>Пошук книг: </span>
+        <a href="#" @click="clearFilter">очистити</a>
+        <input type="search" v-model="filterString" placeholder="за автором та назвою" class="form-control">
+        <input type="checkbox" v-model="filters.showRented"><span> Показувати зайняті книги</span>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
         <div v-if="filteredBooks.length">
           <p>Знайдено <b>{{filteredBooks.length}}</b> книг <span>(сторінка <span>{{page}} з {{pages}}</span>)</span>:</p>
-          <ul class="list-group">
-            <li v-for="book in pageBooks" :class="`list-group-item ` + (book.isRented ? 'book-rented' : 'book')">
-              <div class="row">
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                  <img :src="book.coverUrl || statics.defaultCoverUrl" height="128">
-                </div>
-                <div class="col-md-10 col-sm-9 col-xs-8">
+          <div class="row books">
+            <div v-for="book in pageBooks" :class="`col-md-3 col-sm-4 col-xs-6 ` + (book.isRented ? 'book-rented' : 'book')">
+              <div class="thumbnail">
+                <img :src="book.coverUrl || statics.defaultCoverUrl" style="max-height: 200px">
+                <div class="caption">
                   <p class="book-title">{{book.title}} <span v-if="book.isRented" class="label label-danger">зайнята</span></p>
                   <p>
                     <b>
@@ -112,18 +94,22 @@
                     </b>
                   </p>
                   <p>
-                    <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">
-                      <span>Відгуки (Yakaboo) </span>
-                    </a>
-                    <span v-else class="text-muted">
-                      Відгуки відсутні
-                    </span>
+                    <a href="#" class="btn btn-primary" role="button" data-toggle="modal" data-target="#borrowModal"
+                      @click="selectBook(book)">Позичити</a>
+                    <small class="reviews">
+                      <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">
+                        <span>Відгуки (Yakaboo) </span>
+                      </a>
+                      <span v-else class="text-muted">
+                        Відгуки відсутні
+                      </span>
+                    </small>
                   </p>
                 </div>
               </div>
-            </li>
-          </ul>
-          <nav>
+            </div>
+          </div>
+          <nav id="paginator">
             <ul class="pager">
               <li v-if="page > 2"><a href="#" @click="firstPage">&lt;&lt;</a></li>
               <li v-if="page > 1"><a href="#" @click="prevPage">&lt;</a></li>
@@ -141,21 +127,62 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- Modal -->
-  <div id="aboutModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="about"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
         </div>
-        <div class="modal-body">
-          <div id="about"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <!-- Borrow Modal -->
+    <div id="borrowModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="borrowModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" v-if="selectedBook">
+            <p>Зв'яжіться зі мною, щоби домовитись про передачу цієї книги:</p>
+            <div id="contact-links" class="btn-group-vertical" role="group">
+              <a :href="user.telegramLink" class="btn btn-primary" target="_blank">
+                <img :src="statics.telegramLogoUrl" height="20">
+                <span class="">Напишіть в Telegram</span>
+              </a>
+              <a :href="user.instagramLink" class="btn btn-default" target="_blank">
+                <img :src="statics.instagramLogoUrl" height="20">
+                <span class="">Напишіть в Instagram</span>
+              </a>
+            </div>
+            <div class="thumbnail">
+              <div class="caption">
+                <h3>{{selectedBook.title}} <span v-if="selectedBook.isRented" class="label label-danger">зайнята</span></h3>
+                <p>
+                  <b>
+                    <span>{{selectedBook.author}} </span>
+                  </b>
+                </p>
+              </div>
+              <img :src="selectedBook.coverUrl || statics.defaultCoverUrl">
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>

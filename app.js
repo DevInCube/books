@@ -32,12 +32,13 @@ const app = new Vue({
     data: {
         loading: true,
         allBooks: [],
+        selectedBook: null,
         filterString: ``,
         filters: {
             showRented: true,
         },
         page: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 8,
         statics: {
             defaultCoverUrl: `https://vignette.wikia.nocookie.net/summoner-the-novice/images/e/e2/Placeholder_02.png/revision/latest?cb=20180210125541`,
             goodreadsLogoUrl: `https://images-eu.ssl-images-amazon.com/images/I/61Fkb1F2vOL.png`,
@@ -96,6 +97,9 @@ const app = new Vue({
         filterByContents(e) {
             const contents = e.target.innerText;
             this.filterString = contents.trim();
+        },
+        selectBook(book) {
+            this.selectedBook = book;
         },
         prevPage() { this.page -= 1; },
         nextPage() { this.page += 1; },
