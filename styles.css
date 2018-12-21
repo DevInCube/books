@@ -31,9 +31,12 @@
 #social-links {
   margin-top: 5px;
 }
-.reviews {
-  margin-left: 10px;
+.select-book {
+  margin-right: 10px;
 }
 #contact-links {
   margin-bottom: 10px;
+}
+.invisible {
+  opacity: 0;
 }

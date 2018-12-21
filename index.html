@@ -69,8 +69,8 @@
       </div>
       <div id="filter-box" class="col-md-8 col-md-pull-4 col-sm-6 col-sm-pull-6 col-xs-12">
         <span>Пошук книг: </span>
-        <a href="#" @click="clearFilter">очистити</a>
         <input type="search" v-model="filterString" placeholder="за автором та назвою" class="form-control">
+        <a href="#" @click="clearFilter">очистити</a>
         <!--<input type="checkbox" v-model="filters.showRented"><span> Показувати зайняті книги</span>-->
       </div>
     </div>
@@ -91,15 +91,11 @@
                     </b>
                   </p>
                   <p>
-                    <a href="#" class="btn btn-primary" role="button" data-toggle="modal" data-target="#borrowModal"
+                    <a href="#" class="btn btn-primary select-book" role="button" data-toggle="modal" data-target="#borrowModal"
                       @click="selectBook(book)">Позичити</a>
                     <small class="reviews">
-                      <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">
-                        <span>Відгуки (Yakaboo) </span>
-                      </a>
-                      <span v-else class="text-muted">
-                        Відгуки відсутні
-                      </span>
+                      <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки (Yakaboo)</a>
+                      <span v-else class="text-muted">Відгуки відсутні</span>
                     </small>
                   </p>
                 </div>
@@ -108,11 +104,11 @@
           </div>
           <nav id="paginator">
             <ul class="pager">
-              <li v-if="page > 2"><a href="#" @click="firstPage">&lt;&lt;</a></li>
-              <li v-if="page > 1"><a href="#" @click="prevPage">&lt;</a></li>
-              <span>{{page}} з {{pages}}</span>
-              <li v-if="page &lt; pages"><a href="#" @click="nextPage">&gt;</a></li>
-              <li v-if="page &lt; pages - 1"><a href="#" @click="lastPage">&gt;&gt;</a></li>
+              <li :class="page &lt;= 2 ? 'invisible' : ''"><a href="#" @click="firstPage">&lt;&lt;</a></li>
+              <li :class="page &lt;= 1 ? 'invisible' : ''"><a href="#" @click="prevPage">&lt;</a></li>
+              <span> {{page}} з {{pages}} </span>
+              <li :class="page &gt;= pages ? 'invisible' : ''"><a href="#" @click="nextPage">&gt;</a></li>
+              <li :class="page &gt;= pages - 1 ? 'invisible' : ''"><a href="#" @click="lastPage">&gt;&gt;</a></li>
             </ul>
           </nav>
         </div>
