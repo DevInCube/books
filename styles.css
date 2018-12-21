@@ -11,3 +11,7 @@
 .book-rented {
   opacity: 0.5;
 }
+.sep {
+  content: "•";
+  padding: 5px;
+}
