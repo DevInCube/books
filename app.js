@@ -38,7 +38,7 @@ const app = new Vue({
             showRented: true,
         },
         page: 1,
-        itemsPerPage: 8,
+        itemsPerPage: 12,
         statics: {
             defaultCoverUrl: `https://vignette.wikia.nocookie.net/summoner-the-novice/images/e/e2/Placeholder_02.png/revision/latest?cb=20180210125541`,
             goodreadsLogoUrl: `https://images-eu.ssl-images-amazon.com/images/I/61Fkb1F2vOL.png`,

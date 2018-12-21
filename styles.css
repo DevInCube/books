@@ -1,3 +1,6 @@
+#app {
+  max-width: 1920px;
+}
 .site-name {
   color: darkslategrey;
   font-weight: bold;
@@ -8,6 +11,9 @@
 #holder-box {
   margin-top: 20px;
   text-align: right;
+}
+.book-cover {
+  text-align: center;
 }
 .book-title {
   font-size: 16px;
