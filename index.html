@@ -34,15 +34,18 @@
       <div class="col-lg-10 col-md-12">
         <div class="row">
           <div class="col-md-8 col-sm-8 col-xs-12">
-            <h1 class="site-name hidden-xs">RA/Books <small>позичайте книги</small></h1>
+            <h1 class="site-name hidden-xs"><a href="#" class="brand" @click="clearFilter">RA/Books</a> <small>Читайте книги</small></h1>
             <h1 class="site-name site-name-xs visible-xs">RA/Books</h1>
             <div class="float-right">
-              <a :href="statics.telegramChannelLink" target="_blank">
-                <img :src="statics.telegramLogoUrl" height="16px">
-                <span>Слідкуйте за оновленнями</span>
+              <a href="#" data-toggle="modal" data-target="#aboutModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span>Про проект</span>
               </a>
               <span class="sep"></span>
-              <a href="#" data-toggle="modal" data-target="#aboutModal">Про проект</a>
+              <a :href="statics.telegramChannelLink" target="_blank">
+                <span class="glyphicon glyphicon-bell"></span>
+                <span>Слідкувати за оновленнями</span>
+              </a>
             </div>
           </div>
           <div id="holder-box" class="col-md-4 col-sm-4 col-xs-12" v-cloak>
@@ -50,7 +53,7 @@
               <div class="media-body">
                 <h4 class="media-heading">{{user.fullname}}</h4>
                 <div>
-                  <span>Регіон: </span>
+                  <span>Місто: </span>
                   <span><b>{{user.region}}</b></span>
                 </div>
                 <div id="social-links" class="btn-group-horizontal" role="group">
@@ -66,7 +69,7 @@
                 </div>
               </div>
               <div class="media-right">
-                <img :src="user.imageUrl" class="img-circle" height="64">
+                <img :src="user.imageUrl" class="img-circle user-image" height="64">
               </div>
             </div>
           </div>
@@ -75,8 +78,8 @@
         <div class="row">
           <div id="filter-box" class="col-md-12">
             <span>Пошук книг: </span>
-            <input type="search" v-model="filterString" placeholder="за автором та назвою" class="form-control">
-            <a href="#" @click="clearFilter">очистити</a>
+            <input type="search" v-model="filterString" placeholder="Автор, назва" class="form-control">
+            <a href="#" @click="clearFilter">Очистити</a>
             <!--<input type="checkbox" v-model="filters.showRented"><span> Показувати зайняті книги</span>-->
           </div>
         </div>
@@ -90,7 +93,7 @@
                 <div v-for="book in pageBooks" :class="`col-lg-2 col-md-3 col-sm-4 col-xs-12 ` + (book.isRented ? 'book-rented' : 'book')">
                   <div class="thumbnail row">
                     <div class="book-cover col-sm-12 col-xs-6">
-                      <img :src="book.coverUrl || statics.defaultCoverUrl" style="max-height: 200px">
+                      <img :src="book.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 200px">
                     </div>
                     <div class="book-info col-sm-12 col-xs-6 caption">
                       <p class="book-title" :title="book.title">{{book.title}}</p>
@@ -109,7 +112,6 @@
                       <p>
                         <a href="#" class="btn btn-primary select-book" role="button" data-toggle="modal" data-target="#borrowModal"
                           @click="selectBook(book)">Позичити</a>
-                        <span v-if="book.isRented" class="label label-danger">зайнята</span>
                       </p>
                     </div>
                   </div>
@@ -170,16 +172,20 @@
                   </div>
                   <div class="media-body">
                     <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
-                    <p>Зв'яжіться зі мною, щоби домовитись про передачу цієї книги:</p>
-                    <div id="contact-links" class="btn-group-vertical" role="group">
-                      <a :href="user.telegramLink" class="btn btn-primary" target="_blank">
+                    <p>Зв'яжись зі мною, щоб отримати книгу:</p>
+                    <div id="contact-links" class="btn-group-horizontal" role="group">
+                      <a :href="user.telegramLink" class="btn btn-default" target="_blank">
                         <img :src="statics.telegramLogoUrl" height="20">
-                        <span class="">Напишіть в Telegram</span>
+                        <span class="">Telegram</span>
                       </a>
                       <a :href="user.instagramLink" class="btn btn-default" target="_blank">
                         <img :src="statics.instagramLogoUrl" height="20">
-                        <span class="">Напишіть в Instagram</span>
+                        <span class="">Instagram</span>
                       </a>
+                      <a :href="`mailto:` + user.emailLink" class="btn btn-default" target="_blank">
+                          <img :src="statics.gmailLogoUrl" height="20">
+                          <span class="">E-Mail</span>
+                        </a>
                     </div>
                   </div>
                 </div>
@@ -191,7 +197,7 @@
                       <span>{{selectedBook.author}} </span>
                     </b>
                   </p>
-                  <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%;">
+                  <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 80%;">
                 </div>
 
               </div>

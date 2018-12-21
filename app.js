@@ -44,6 +44,7 @@ const app = new Vue({
             goodreadsLogoUrl: `https://images-eu.ssl-images-amazon.com/images/I/61Fkb1F2vOL.png`,
             telegramLogoUrl: `https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Telegram_alternative_logo.svg/384px-Telegram_alternative_logo.svg.png`,
             instagramLogoUrl: `https://instagram-brand.com/wp-content/uploads/2016/11/app-icon2.png`,
+            gmailLogoUrl: `https://dl1.cbsistatic.com/i/r/2017/04/07/8f97f0cc-ea83-4b86-8f96-6c9519e25f44/thumbnail/64x64/a691a5bfbc1a06841bad99cc5e74e0b9/imgingest-665667076150066853.png`,
             telegramChannelLink: `https://t.me/rabooks`,
         },
         user: {
@@ -53,6 +54,7 @@ const app = new Vue({
             goodreadsLink: `https://www.goodreads.com/user/show/51764433-ruslan-hadyniak`,
             telegramLink: `https://t.me/rhadyniak`,
             instagramLink: `https://www.instagram.com/rhadyniak/`,
+            emailLink: `ruslan.hadyniak@gmail.com`,
         },
     },
     computed: {
@@ -61,6 +63,7 @@ const app = new Vue({
                 .filter(x =>
                     (this.filters.showRented || !x.isRented)
                     && (this.filterString.trim() === '' || `${x.title} ${x.author}`.toLowerCase().includes(this.filterString.toLowerCase())));
+            filteredBooks.sort((a, b) => ('' + a.title).localeCompare(b.title));
             return filteredBooks;
         },
         pages() {
