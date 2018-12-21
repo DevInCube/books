@@ -128,7 +128,7 @@
               </nav>
             </div>
             <div v-if="loading" class="alert alert-info">
-              <p>Завантаження книг ...</p>
+              <p>Розкладаю книги по полицях ...</p>
             </div>
             <div v-if="notFound" class="alert alert-warning" v-cloak>
               <p>Книг за запитом "{{filterString}}" не знайдено</p>
@@ -147,6 +147,8 @@
               </div>
               <div class="modal-body">
                 <div id="about"></div>
+                <br/>
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdK2V8tHDgH7Xyrjs6HtHJoWsZPCoUuPKMcuoEWubjyb2zWrQ/viewform?embedded=true" width="100%" height="987" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
@@ -176,15 +178,15 @@
                     <div id="contact-links" class="btn-group-horizontal" role="group">
                       <a :href="user.telegramLink" class="btn btn-default" target="_blank">
                         <img :src="statics.telegramLogoUrl" height="20">
-                        <span class="">Telegram</span>
+                        <span class="hidden-xs">Telegram</span>
                       </a>
                       <a :href="user.instagramLink" class="btn btn-default" target="_blank">
                         <img :src="statics.instagramLogoUrl" height="20">
-                        <span class="">Instagram</span>
+                        <span class="hidden-xs">Instagram</span>
                       </a>
                       <a :href="`mailto:` + user.emailLink" class="btn btn-default" target="_blank">
                           <img :src="statics.gmailLogoUrl" height="20">
-                          <span class="">E-Mail</span>
+                          <span class="hidden-xs">E-Mail</span>
                         </a>
                     </div>
                   </div>
