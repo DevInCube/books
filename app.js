@@ -97,15 +97,30 @@ const app = new Vue({
             const contents = e.target.innerText;
             this.filterString = contents.trim();
         },
-        prevPage() {
-            this.page -= 1;
-        },
-        nextPage() {
-            this.page += 1;
-        },
+        prevPage() { this.page -= 1; },
+        nextPage() { this.page += 1; },
+        firstPage() { this.page = 1; },
+        lastPage() { this.page = this.pages; },
     }
 });
 
 function handleTqResponse(resp) {
     app.setBooks(parseBooks(resp));
+}
+
+const aboutMd = `### Зичу книги!
+
+У мене накопичилось багато книжок, які прагнуть бути прочитаними.  
+Якщо ви живете у моєму регіоні і вас зацікавлять якісь книги - просто напишіть мені по одному із вказаних посилань і я дам їх вам почитати.
+`;
+const aboutEl = document.getElementById("about");
+aboutEl.innerHTML = mdToHtml(aboutMd);
+
+function mdToHtml(md) {
+    var reader = new commonmark.Parser();
+    var writer = new commonmark.HtmlRenderer();
+    var parsed = reader.parse(md); // parsed is a 'Node' tree
+    // transform parsed if you like...
+    var result = writer.render(parsed); // result is a String
+    return result;
 }

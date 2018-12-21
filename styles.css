@@ -11,7 +11,7 @@
 .book-rented {
   opacity: 0.5;
 }
-.sep {
+.sep::before {
   content: "•";
   padding: 5px;
 }
