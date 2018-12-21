@@ -45,7 +45,7 @@
               <a href="#" data-toggle="modal" data-target="#aboutModal">Про проект</a>
             </div>
           </div>
-          <div id="holder-box" class="col-md-4 col-sm-4 col-xs-12">
+          <div id="holder-box" class="col-md-4 col-sm-4 col-xs-12" v-cloak>
             <div class="media">
               <div class="media-body">
                 <h4 class="media-heading">{{user.fullname}}</h4>
@@ -83,7 +83,7 @@
         <hr />
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
-            <div v-if="filteredBooks.length">
+            <div v-if="filteredBooks.length" v-cloak>
               <p>Знайдено <b>{{filteredBooks.length}}</b> книг <span>(сторінка <span>{{page}} з {{pages}}</span>)</span>:</p>
 
               <div class="row books">
@@ -115,89 +115,89 @@
                   </div>
                 </div>
               </div>
+              <nav id="paginator">
+                <ul class="pager">
+                  <li :class="page &lt;= 2 ? 'invisible' : ''"><a href="#" @click="firstPage">&lt;&lt;</a></li>
+                  <li :class="page &lt;= 1 ? 'invisible' : ''"><a href="#" @click="prevPage">&lt;</a></li>
+                  <span> {{page}} з {{pages}} </span>
+                  <li :class="page &gt;= pages ? 'invisible' : ''"><a href="#" @click="nextPage">&gt;</a></li>
+                  <li :class="page &gt;= pages - 1 ? 'invisible' : ''"><a href="#" @click="lastPage">&gt;&gt;</a></li>
+                </ul>
+              </nav>
             </div>
-
-            <nav id="paginator">
-              <ul class="pager">
-                <li :class="page &lt;= 2 ? 'invisible' : ''"><a href="#" @click="firstPage">&lt;&lt;</a></li>
-                <li :class="page &lt;= 1 ? 'invisible' : ''"><a href="#" @click="prevPage">&lt;</a></li>
-                <span> {{page}} з {{pages}} </span>
-                <li :class="page &gt;= pages ? 'invisible' : ''"><a href="#" @click="nextPage">&gt;</a></li>
-                <li :class="page &gt;= pages - 1 ? 'invisible' : ''"><a href="#" @click="lastPage">&gt;&gt;</a></li>
-              </ul>
-            </nav>
-          </div>
-          <div v-if="loading" class="alert alert-info">
-            <p>Завантаження книг ...</p>
-          </div>
-          <div v-if="notFound" class="alert alert-warning">
-            <p>Книг за запитом "{{filterString}}" не знайдено</p>
-          </div>
-        </div>
-      </div>
-      <!-- About Modal -->
-      <div id="aboutModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div v-if="loading" class="alert alert-info">
+              <p>Завантаження книг ...</p>
             </div>
-            <div class="modal-body">
-              <div id="about"></div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+            <div v-if="notFound" class="alert alert-warning" v-cloak>
+              <p>Книг за запитом "{{filterString}}" не знайдено</p>
             </div>
           </div>
         </div>
-      </div>
-      <!-- Borrow Modal -->
-      <div id="borrowModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="borrowModalLongTitle"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+        <!-- About Modal -->
+        <div id="aboutModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLongTitle"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div id="about"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+              </div>
             </div>
-            <div class="modal-body" v-if="selectedBook">
+          </div>
+        </div>
+        <!-- Borrow Modal -->
+        <div id="borrowModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="borrowModalLongTitle"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" v-if="selectedBook">
 
-              <div class="media">
-                <div class="media-left">
-                  <img :src="user.imageUrl" class="img-circle" height="32">
-                </div>
-                <div class="media-body">
-                  <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
-                  <p>Зв'яжіться зі мною, щоби домовитись про передачу цієї книги:</p>
-                  <div id="contact-links" class="btn-group-vertical" role="group">
-                    <a :href="user.telegramLink" class="btn btn-primary" target="_blank">
-                      <img :src="statics.telegramLogoUrl" height="20">
-                      <span class="">Напишіть в Telegram</span>
-                    </a>
-                    <a :href="user.instagramLink" class="btn btn-default" target="_blank">
-                      <img :src="statics.instagramLogoUrl" height="20">
-                      <span class="">Напишіть в Instagram</span>
-                    </a>
+                <div class="media">
+                  <div class="media-left">
+                    <img :src="user.imageUrl" class="img-circle" height="32">
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
+                    <p>Зв'яжіться зі мною, щоби домовитись про передачу цієї книги:</p>
+                    <div id="contact-links" class="btn-group-vertical" role="group">
+                      <a :href="user.telegramLink" class="btn btn-primary" target="_blank">
+                        <img :src="statics.telegramLogoUrl" height="20">
+                        <span class="">Напишіть в Telegram</span>
+                      </a>
+                      <a :href="user.instagramLink" class="btn btn-default" target="_blank">
+                        <img :src="statics.instagramLogoUrl" height="20">
+                        <span class="">Напишіть в Instagram</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <hr />
-              <div style="text-align: center;">
-                <h3>{{selectedBook.title}} <span v-if="selectedBook.isRented" class="label label-danger">зайнята</span></h3>
-                <p>
-                  <b>
-                    <span>{{selectedBook.author}} </span>
-                  </b>
-                </p>
-                <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%;">
-              </div>
+                <hr />
+                <div style="text-align: center;">
+                  <h3>{{selectedBook.title}} <span v-if="selectedBook.isRented" class="label label-danger">зайнята</span></h3>
+                  <p>
+                    <b>
+                      <span>{{selectedBook.author}} </span>
+                    </b>
+                  </p>
+                  <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%;">
+                </div>
 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+              </div>
             </div>
           </div>
         </div>
