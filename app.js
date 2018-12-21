@@ -60,9 +60,7 @@ const app = new Vue({
             const filteredBooks = this.allBooks
                 .filter(x =>
                     (this.filters.showRented || !x.isRented)
-                    && (this.filterString.trim() === '' || this.filterString.split(/\s+/g)
-                        .filter(x => x)
-                        .filter(part => `${x.title} ${x.author}`.toLowerCase().includes(part.toLowerCase())).length > 0));
+                    && (this.filterString.trim() === '' || `${x.title} ${x.author}`.toLowerCase().includes(this.filterString.toLowerCase())));
             return filteredBooks;
         },
         pages() {

@@ -54,10 +54,10 @@
               <span><b>{{user.region}}</b></span>
             </div>
             <div id="social-links" class="btn-group-horizontal" role="group">
-              <a :href="user.telegramLink" class="" target="_blank" title="Напишіть в Telegram">
+              <a :href="user.telegramLink" class="" target="_blank" title="Мій Telegram">
                 <img :src="statics.telegramLogoUrl" height="20">
               </a>
-              <a :href="user.instagramLink" class="" target="_blank" title="Напишіть в Instagram">
+              <a :href="user.instagramLink" class="" target="_blank" title="Мій Instagram">
                 <img :src="statics.instagramLogoUrl" height="20">
               </a>
               <a :href="user.goodreadsLink" class="" target="_blank" title="Мій Goodreads">
@@ -71,7 +71,7 @@
         <span>Пошук книг: </span>
         <a href="#" @click="clearFilter">очистити</a>
         <input type="search" v-model="filterString" placeholder="за автором та назвою" class="form-control">
-        <input type="checkbox" v-model="filters.showRented"><span> Показувати зайняті книги</span>
+        <!--<input type="checkbox" v-model="filters.showRented"><span> Показувати зайняті книги</span>-->
       </div>
     </div>
     <hr />
@@ -84,13 +84,10 @@
               <div class="thumbnail">
                 <img :src="book.coverUrl || statics.defaultCoverUrl" style="max-height: 200px">
                 <div class="caption">
-                  <p class="book-title">{{book.title}} <span v-if="book.isRented" class="label label-danger">зайнята</span></p>
+                  <p class="book-title" :title="book.title">{{book.title}} <span v-if="book.isRented" class="label label-danger">зайнята</span></p>
                   <p>
                     <b>
-                      <a href="#" @click="filterByContents">
-                        <span>{{book.author}} </span>
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                      </a>
+                      <a href="#" class="book-author" @click="filterByContents" :title="book.author">{{book.author}}</a>
                     </b>
                   </p>
                   <p>
@@ -140,7 +137,7 @@
             <div id="about"></div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
           </div>
         </div>
       </div>
@@ -181,7 +178,7 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
           </div>
         </div>
       </div>
