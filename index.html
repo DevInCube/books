@@ -119,11 +119,11 @@
               </div>
               <nav id="paginator">
                 <ul class="pager">
-                  <li :class="page &lt;= 2 ? 'invisible' : ''"><a href="#" @click="firstPage">&lt;&lt;</a></li>
-                  <li :class="page &lt;= 1 ? 'invisible' : ''"><a href="#" @click="prevPage">&lt;</a></li>
-                  <span> {{page}} з {{pages}} </span>
-                  <li :class="page &gt;= pages ? 'invisible' : ''"><a href="#" @click="nextPage">&gt;</a></li>
-                  <li :class="page &gt;= pages - 1 ? 'invisible' : ''"><a href="#" @click="lastPage">&gt;&gt;</a></li>
+                  <li :class="page &lt;= 2 ? 'invisible' : 'page'"><a href="#" @click="firstPage" >&lt;&lt;</a></li>
+                  <li :class="page &lt;= 1 ? 'invisible' : 'page'"><a href="#" @click="prevPage">&lt;</a></li>
+                  <span style="margin: 10px;"> {{page}} з {{pages}} </span>
+                  <li :class="page &gt;= pages ? 'invisible' : 'page'"><a href="#" @click="nextPage">&gt;</a></li>
+                  <li :class="page &gt;= pages - 1 ? 'invisible' : 'page'"><a href="#" @click="lastPage">&gt;&gt;</a></li>
                 </ul>
               </nav>
             </div>
