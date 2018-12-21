@@ -29,24 +29,21 @@
 
 <body>
   <div id="app" class="container">
-    <div>
-      <h1 class="site-name">RA/Books <small class="hidden-xs">позичайте книги</small></h1>
-      <div class="float-right">
-        <a :href="statics.telegramChannelLink" target="_blank">
-          <img :src="statics.telegramLogoUrl" height="16px">
-          <span>Слідкуйте за оновленнями</span>
-        </a>
-        <span class="sep"></span>
-        <a href="#" data-toggle="modal" data-target="#aboutModal">Про проект</a>
-      </div>
-    </div>
-    <hr />
     <div class="row">
-      <div id="holder-box" class="col-md-4 col-md-push-8 col-sm-6 col-sm-push-6 col-xs-12">
+      <div class="col-md-8 col-sm-8 col-xs-12">
+        <h1 class="site-name hidden-xs">RA/Books <small>позичайте книги</small></h1>
+        <h1 class="site-name site-name-xs visible-xs">RA/Books</h1>
+        <div class="float-right">
+          <a :href="statics.telegramChannelLink" target="_blank">
+            <img :src="statics.telegramLogoUrl" height="16px">
+            <span>Слідкуйте за оновленнями</span>
+          </a>
+          <span class="sep"></span>
+          <a href="#" data-toggle="modal" data-target="#aboutModal">Про проект</a>
+        </div>
+      </div>
+      <div id="holder-box" class="col-md-4 col-sm-4 col-xs-12">
         <div class="media">
-          <div class="media-left">
-            <img :src="user.imageUrl" class="img-circle" height="64">
-          </div>
           <div class="media-body">
             <h4 class="media-heading">{{user.fullname}}</h4>
             <div>
@@ -65,9 +62,15 @@
               </a>
             </div>
           </div>
+          <div class="media-right">
+            <img :src="user.imageUrl" class="img-circle" height="64">
+          </div>
         </div>
       </div>
-      <div id="filter-box" class="col-md-8 col-md-pull-4 col-sm-6 col-sm-pull-6 col-xs-12">
+    </div>
+    <hr />
+    <div class="row">
+      <div id="filter-box" class="col-md-12">
         <span>Пошук книг: </span>
         <input type="search" v-model="filterString" placeholder="за автором та назвою" class="form-control">
         <a href="#" @click="clearFilter">очистити</a>
@@ -94,7 +97,8 @@
                     <a href="#" class="btn btn-primary select-book" role="button" data-toggle="modal" data-target="#borrowModal"
                       @click="selectBook(book)">Позичити</a>
                     <small class="reviews">
-                      <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки (Yakaboo)</a>
+                      <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки
+                        (Yakaboo)</a>
                       <span v-else class="text-muted">Відгуки відсутні</span>
                     </small>
                   </p>
