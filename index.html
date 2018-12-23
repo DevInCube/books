@@ -34,17 +34,26 @@
       <div class="col-lg-10 col-md-12">
         <div class="row">
           <div class="col-md-8 col-sm-8 col-xs-12">
-            <h1 class="site-name hidden-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a> <small>Читай не купуючи!</small></h1>
+            <h1 class="site-name hidden-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a> <small>Читай
+                не купуючи!</small></h1>
             <h1 class="site-name site-name-xs visible-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a></h1>
-            <div class="float-right">
+            <p>
+              <span>Я зібрав невелику бібліотеку цікавих книг, що прагнуть бути прочитаними.</span><br/>
+              <span>Ти живеш у моєму місті і хочеш щось прочитати? Обери та напиши мені!</span>
               <a href="#" data-toggle="modal" data-target="#aboutModal">
-                <span class="glyphicon glyphicon-info-sign"></span>
-                <span>Про проект</span>
+                Детальнiше...
+              </a>
+            </p>
+            <div class="float-right">
+              <a href="#" data-toggle="modal" data-target="#feedbackModal">
+                <span class="glyphicon glyphicon-comment"></span>
+                <span>Залиши відгук</span>
               </a>
               <span class="sep"></span>
               <a :href="statics.telegramChannelLink" target="_blank">
                 <span class="glyphicon glyphicon-bell"></span>
                 <span>Оновлення</span>
+                <small><span class="glyphicon glyphicon-new-window"></span></small>
               </a>
             </div>
           </div>
@@ -53,7 +62,6 @@
               <div class="media-body">
                 <h4 class="media-heading">{{user.fullname}}</h4>
                 <div>
-                  <span>Місто: </span>
                   <span><b>{{user.region}}</b></span>
                 </div>
                 <div id="social-links" class="btn-group-horizontal" role="group">
@@ -108,7 +116,7 @@
                         <p>
                           <small class="reviews">
                             <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки
-                              (Yakaboo)</a>
+                              (Yakaboo) <small><span class="glyphicon glyphicon-new-window"></span></small></a>
                             <span v-else class="text-muted">Відгуки відсутні</span>
                           </small>
                         </p>
@@ -155,10 +163,32 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
+              <h4 id="aboutModalLongTitle" class="modal-title">Проект</h4>
             </div>
             <div class="modal-body">
               <div id="about"></div>
-              <br />
+              <div id="qa"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Modal -->
+      <div id="feedbackModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLongTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 id="feedbackModalLongTitle" class="modal-title">Оціни проект</h4>
+            </div>
+            <div class="modal-body">
+              <p>Якщо тебе зацікавив цей проект - буду вдячний за зворотній зв'язок:</p>
               <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdK2V8tHDgH7Xyrjs6HtHJoWsZPCoUuPKMcuoEWubjyb2zWrQ/viewform?embedded=true"
                 width="100%" height="987" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
             </div>
@@ -178,6 +208,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
+              <h4 id="borrowModalLongTitle" class="modal-title">Позичити книгу</h4>
             </div>
             <div id="book-modal-body" class="modal-body">
               <div v-if="selectedBook">
@@ -202,16 +233,8 @@
                         <span class="hidden-xs">email</span>
                       </a>
                     </div>
-                    <div>
-                      <p>Зручні місця для зустрічі (Київ):</p>
-                      <ul>
-                        <li>м. Політехнічний інститут</li>
-                        <li>м. Університет</li>
-                        <li>м. Льва Толстого</li>
-                      </ul>
-                    </div>
                     <div v-if="selectedBook.isRented" class="alert alert-warning">
-                      Ця книга зараз зайнята, але ти можеш записатися у чергу за нею.
+                      Ця книга зараз зайнята. Дізнайся в мене, коли вона стане доступною
                     </div>
                   </div>
                 </div>
