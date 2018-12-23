@@ -34,8 +34,7 @@
       <div class="col-lg-10 col-md-12">
         <div class="row">
           <div class="col-md-8 col-sm-8 col-xs-12">
-            <h1 class="site-name hidden-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a> <small>Читайте
-                книги</small></h1>
+            <h1 class="site-name hidden-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a> <small>Читай не купуючи!</small></h1>
             <h1 class="site-name site-name-xs visible-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a></h1>
             <div class="float-right">
               <a href="#" data-toggle="modal" data-target="#aboutModal">
@@ -180,53 +179,53 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body" v-if="selectedBook">
-
-              <div class="media">
-                <div class="media-left">
-                  <img :src="user.imageUrl" class="img-circle" height="32">
+            <div id="book-modal-body" class="modal-body">
+              <div v-if="selectedBook">
+                <div class="media">
+                  <div class="media-left">
+                    <img :src="user.imageUrl" class="img-circle" height="32">
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
+                    <p>Зв'яжись зі мною, щоб отримати книгу:</p>
+                    <div id="contact-links" class="btn-group-horizontal" role="group">
+                      <a :href="user.telegramLink" class="btn btn-default" target="_blank">
+                        <img :src="statics.telegramLogoUrl" height="20">
+                        <span class="hidden-xs">Telegram</span>
+                      </a>
+                      <a :href="user.instagramLink" class="btn btn-default" target="_blank">
+                        <img :src="statics.instagramLogoUrl" height="20">
+                        <span class="hidden-xs">Instagram</span>
+                      </a>
+                      <a :href="`mailto:` + user.emailLink" class="btn btn-default" target="_blank">
+                        <img :src="statics.gmailLogoUrl" height="20">
+                        <span class="hidden-xs">email</span>
+                      </a>
+                    </div>
+                    <div>
+                      <p>Зручні місця для зустрічі зі мною (Київ):</p>
+                      <ul>
+                        <li>м. Політехнічний інститут</li>
+                        <li>м. Університет</li>
+                        <li>м. Льва Толстого</li>
+                      </ul>
+                    </div>
+                    <div v-if="selectedBook.isRented" class="alert alert-warning">
+                      Ця книга зараз зайнята, але ти можеш записатися у чергу за нею.
+                    </div>
+                  </div>
                 </div>
-                <div class="media-body">
-                  <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
-                  <p>Зв'яжись зі мною, щоб отримати книгу:</p>
-                  <div id="contact-links" class="btn-group-horizontal" role="group">
-                    <a :href="user.telegramLink" class="btn btn-default" target="_blank">
-                      <img :src="statics.telegramLogoUrl" height="20">
-                      <span class="hidden-xs">Telegram</span>
-                    </a>
-                    <a :href="user.instagramLink" class="btn btn-default" target="_blank">
-                      <img :src="statics.instagramLogoUrl" height="20">
-                      <span class="hidden-xs">Instagram</span>
-                    </a>
-                    <a :href="`mailto:` + user.emailLink" class="btn btn-default" target="_blank">
-                      <img :src="statics.gmailLogoUrl" height="20">
-                      <span class="hidden-xs">email</span>
-                    </a>
-                  </div>
-                  <div>
-                    <p>Зручні місця для зустрічі зі мною (Київ):</p>
-                    <ul>
-                      <li>м. Політехнічний інститут</li>
-                      <li>м. Університет</li>
-                      <li>м. Льва Толстого</li>
-                    </ul>
-                  </div>
-                  <div v-if="selectedBook.isRented" class="alert alert-warning">
-                    Ця книга зараз зайнята, але ти можеш записатися у чергу за нею.
-                  </div>
+                <hr />
+                <div style="text-align: center;">
+                  <h3>{{selectedBook.title}}</h3>
+                  <p>
+                    <b>
+                      <span>{{selectedBook.author}} </span>
+                    </b>
+                  </p>
+                  <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 80%;">
                 </div>
               </div>
-              <hr />
-              <div style="text-align: center;">
-                <h3>{{selectedBook.title}}</h3>
-                <p>
-                  <b>
-                    <span>{{selectedBook.author}} </span>
-                  </b>
-                </p>
-                <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 80%;">
-              </div>
-
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
@@ -236,7 +235,6 @@
       </div>
       <!-- -->
     </div>
-  </div>
   </div>
   <script src="app.js"></script>
 </body>

@@ -134,3 +134,8 @@ function mdToHtml(md) {
     var result = writer.render(parsed); // result is a String
     return result;
 }
+
+$('#borrowModal').on('shown.bs.modal', function (e) {
+    const bookModalBody = document.getElementById('book-modal-body');
+    bookModalBody.scrollTop = 0;
+})
