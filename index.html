@@ -38,7 +38,7 @@
                 не купуючи!</small></h1>
             <h1 class="site-name site-name-xs visible-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a></h1>
             <p>
-              <span>Я зібрав невелику бібліотеку цікавих книг, що прагнуть бути прочитаними.</span><br/>
+              <span>Я зібрав невелику бібліотеку цікавих книг, що прагнуть бути прочитаними.</span><br />
               <span>Ти живеш у моєму місті і хочеш щось прочитати? Обери та напиши мені!</span>
               <a href="#" data-toggle="modal" data-target="#aboutModal">
                 Детальнiше...
@@ -53,7 +53,6 @@
               <a :href="statics.telegramChannelLink" target="_blank">
                 <span class="glyphicon glyphicon-bell"></span>
                 <span>Оновлення</span>
-                <small><span class="glyphicon glyphicon-new-window"></span></small>
               </a>
             </div>
           </div>
@@ -107,8 +106,14 @@
                         </a>
                       </div>
                       <div class="book-info col-sm-12 col-xs-6 caption">
-                        <p class="book-title" :title="book.title">{{book.title}}</p>
-                        <p class="book-author">
+                        <p class="book-title hidden-xs" :title="book.title">{{book.title}}</p>
+                        <p class="book-title-xs visible-xs" :title="book.title">{{book.title}}</p>
+                        <p class="book-author hidden-xs">
+                          <b>
+                            <a href="#" @click="filterByContents" :title="book.author">{{book.author}}</a>
+                          </b>
+                        </p>
+                        <p class="visible-xs">
                           <b>
                             <a href="#" @click="filterByContents" :title="book.author">{{book.author}}</a>
                           </b>
@@ -116,7 +121,7 @@
                         <p>
                           <small class="reviews">
                             <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки
-                              (Yakaboo) <small><span class="glyphicon glyphicon-new-window"></span></small></a>
+                              <small><span class="glyphicon glyphicon-new-window"></span></small></a>
                             <span v-else class="text-muted">Відгуки відсутні</span>
                           </small>
                         </p>
@@ -163,7 +168,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 id="aboutModalLongTitle" class="modal-title">Проект</h4>
+              <h4 id="aboutModalLongTitle" class="modal-title">Про проект</h4>
             </div>
             <div class="modal-body">
               <div id="about"></div>
@@ -234,7 +239,7 @@
                       </a>
                     </div>
                     <div v-if="selectedBook.isRented" class="alert alert-warning">
-                      Ця книга зараз зайнята. Дізнайся в мене, коли вона стане доступною
+                      Цю книгу наразі читають. Напиши мені, щоб дізнатися, коли ти зможеш її отримати
                     </div>
                   </div>
                 </div>
