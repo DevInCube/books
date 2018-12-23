@@ -7,6 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RA/Books</title>
 
+  <meta property="og:url" content="https://devincube.github.io/pages/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="RA/Books" />
+  <meta property="og:description" content="Books sharing" />
+  <meta property="og:image" content="images/icon.png" />
+
   <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
   <link rel="shortcut icon" href="images/favicon.ico">
   <link rel="icon" href="images/favicon.ico">
@@ -34,8 +40,9 @@
       <div class="col-lg-10 col-md-12">
         <div class="row">
           <div class="col-md-8 col-sm-8 col-xs-12">
-            <h1 class="site-name hidden-xs"><a href="#" class="brand" @click="clearFilter">RA/Books</a> <small>Читайте книги</small></h1>
-            <h1 class="site-name site-name-xs visible-xs">RA/Books</h1>
+            <h1 class="site-name hidden-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a> <small>Читайте
+                книги</small></h1>
+            <h1 class="site-name site-name-xs visible-xs"><a href="#" class="brand-link" @click="reloadPage">RA/Books</a></h1>
             <div class="float-right">
               <a href="#" data-toggle="modal" data-target="#aboutModal">
                 <span class="glyphicon glyphicon-info-sign"></span>
@@ -44,7 +51,7 @@
               <span class="sep"></span>
               <a :href="statics.telegramChannelLink" target="_blank">
                 <span class="glyphicon glyphicon-bell"></span>
-                <span>Слідкувати за оновленнями</span>
+                <span>Оновлення</span>
               </a>
             </div>
           </div>
@@ -77,7 +84,7 @@
         <hr />
         <div class="row">
           <div id="filter-box" class="col-md-12">
-            <span>Пошук книг: </span>
+            <span>Що почитати: </span>
             <input type="search" v-model="filterString" placeholder="Автор, назва" class="form-control">
             <a href="#" @click="clearFilter">Очистити</a>
             <!--<input type="checkbox" v-model="filters.showRented"><span> Показувати зайняті книги</span>-->
@@ -87,45 +94,51 @@
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div v-if="filteredBooks.length" v-cloak>
-              <p>Знайдено <b>{{filteredBooks.length}}</b> книг <span>(сторінка <span>{{page}} з {{pages}}</span>)</span>:</p>
+              <p>Знайдено <b>{{filteredBooks.length}}</b> <span>(сторінка <span>{{page}} з {{pages}}</span>)</span>:</p>
 
               <div class="row books">
                 <div v-for="book in pageBooks" :class="`col-lg-2 col-md-3 col-sm-4 col-xs-12 ` + (book.isRented ? 'book-rented' : 'book')">
-                  <div class="thumbnail row">
-                    <div class="book-cover col-sm-12 col-xs-6">
-                      <img :src="book.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 200px">
-                    </div>
-                    <div class="book-info col-sm-12 col-xs-6 caption">
-                      <p class="book-title" :title="book.title">{{book.title}}</p>
-                      <p class="book-author">
-                        <b>
-                          <a href="#" @click="filterByContents" :title="book.author">{{book.author}}</a>
-                        </b>
-                      </p>
-                      <p>
-                        <small class="reviews">
-                          <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки
-                            (Yakaboo)</a>
-                          <span v-else class="text-muted">Відгуки відсутні</span>
-                        </small>
-                      </p>
-                      <p>
-                        <a href="#" class="btn btn-primary select-book" role="button" data-toggle="modal" data-target="#borrowModal"
-                          @click="selectBook(book)">Позичити</a>
-                      </p>
+                  <div class="book-container">
+                    <div class="thumbnail row" :title="`${book.title}. ${book.author}`">
+                      <div class="book-cover col-sm-12 col-xs-6">
+                        <a href="#" role="button" data-toggle="modal" data-target="#borrowModal" @click="selectBook(book)">
+                          <img :src="book.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 200px">
+                        </a>
+                      </div>
+                      <div class="book-info col-sm-12 col-xs-6 caption">
+                        <p class="book-title" :title="book.title">{{book.title}}</p>
+                        <p class="book-author">
+                          <b>
+                            <a href="#" @click="filterByContents" :title="book.author">{{book.author}}</a>
+                          </b>
+                        </p>
+                        <p>
+                          <small class="reviews">
+                            <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки
+                              (Yakaboo)</a>
+                            <span v-else class="text-muted">Відгуки відсутні</span>
+                          </small>
+                        </p>
+                        <p>
+                          <a href="#" class="btn btn-primary select-book" role="button" data-toggle="modal" data-target="#borrowModal"
+                            @click="selectBook(book)">Позичити</a>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <nav id="paginator">
-                <ul class="pager">
-                  <li :class="page &lt;= 2 ? 'invisible' : 'page'"><a href="#" @click="firstPage" >&lt;&lt;</a></li>
-                  <li :class="page &lt;= 1 ? 'invisible' : 'page'"><a href="#" @click="prevPage">&lt;</a></li>
-                  <span style="margin: 10px;"> {{page}} з {{pages}} </span>
-                  <li :class="page &gt;= pages ? 'invisible' : 'page'"><a href="#" @click="nextPage">&gt;</a></li>
-                  <li :class="page &gt;= pages - 1 ? 'invisible' : 'page'"><a href="#" @click="lastPage">&gt;&gt;</a></li>
-                </ul>
-              </nav>
+
+              <div class="pages-container">
+                <div class="btn-group btn-group-lg pages" role="group">
+                  <button type="button" :class="(page &lt;= 2 ? 'invisible' : '') + ` btn btn-default`" @click="firstPage">&laquo;</button>
+                  <button type="button" :class="(page &lt;= 1 ? 'invisible' : '') + ` btn btn-default`" @click="prevPage">&lt;</button>
+                  <button type="button" class="btn btn-default page-numbers" disabled><span style="margin: 10px;">
+                      {{page}} з {{pages}} </span></button>
+                  <button type="button" :class="(page &gt;= pages ? 'invisible' : '') + ` btn btn-default`" @click="nextPage">&gt;</button>
+                  <button type="button" :class="(page &gt;= pages - 1 ? 'invisible' : '') + ` btn btn-default`" @click="lastPage">&raquo;</button>
+                </div>
+              </div>
             </div>
             <div v-if="loading" class="alert alert-info">
               <p>Розкладаю книги по полицях ...</p>
@@ -135,82 +148,101 @@
             </div>
           </div>
         </div>
-        <!-- About Modal -->
-        <div id="aboutModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLongTitle"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div id="about"></div>
-                <br/>
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdK2V8tHDgH7Xyrjs6HtHJoWsZPCoUuPKMcuoEWubjyb2zWrQ/viewform?embedded=true" width="100%" height="987" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-              </div>
-            </div>
+        <div class="row">
+          <div class="col-md-12">
           </div>
         </div>
-        <!-- Borrow Modal -->
-        <div id="borrowModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="borrowModalLongTitle"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body" v-if="selectedBook">
+      </div>
 
-                <div class="media">
-                  <div class="media-left">
-                    <img :src="user.imageUrl" class="img-circle" height="32">
-                  </div>
-                  <div class="media-body">
-                    <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
-                    <p>Зв'яжись зі мною, щоб отримати книгу:</p>
-                    <div id="contact-links" class="btn-group-horizontal" role="group">
-                      <a :href="user.telegramLink" class="btn btn-default" target="_blank">
-                        <img :src="statics.telegramLogoUrl" height="20">
-                        <span class="hidden-xs">Telegram</span>
-                      </a>
-                      <a :href="user.instagramLink" class="btn btn-default" target="_blank">
-                        <img :src="statics.instagramLogoUrl" height="20">
-                        <span class="hidden-xs">Instagram</span>
-                      </a>
-                      <a :href="`mailto:` + user.emailLink" class="btn btn-default" target="_blank">
-                          <img :src="statics.gmailLogoUrl" height="20">
-                          <span class="hidden-xs">E-Mail</span>
-                        </a>
-                    </div>
-                  </div>
-                </div>
-                <hr />
-                <div style="text-align: center;">
-                  <h3>{{selectedBook.title}} <span v-if="selectedBook.isRented" class="label label-danger">зайнята</span></h3>
-                  <p>
-                    <b>
-                      <span>{{selectedBook.author}} </span>
-                    </b>
-                  </p>
-                  <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 80%;">
-                </div>
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-              </div>
+      <!-- About Modal -->
+      <div id="aboutModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="about"></div>
+              <br />
+              <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdK2V8tHDgH7Xyrjs6HtHJoWsZPCoUuPKMcuoEWubjyb2zWrQ/viewform?embedded=true"
+                width="100%" height="987" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Borrow Modal -->
+      <div id="borrowModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="borrowModalLongTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" v-if="selectedBook">
+
+              <div class="media">
+                <div class="media-left">
+                  <img :src="user.imageUrl" class="img-circle" height="32">
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
+                  <p>Зв'яжись зі мною, щоб отримати книгу:</p>
+                  <div id="contact-links" class="btn-group-horizontal" role="group">
+                    <a :href="user.telegramLink" class="btn btn-default" target="_blank">
+                      <img :src="statics.telegramLogoUrl" height="20">
+                      <span class="hidden-xs">Telegram</span>
+                    </a>
+                    <a :href="user.instagramLink" class="btn btn-default" target="_blank">
+                      <img :src="statics.instagramLogoUrl" height="20">
+                      <span class="hidden-xs">Instagram</span>
+                    </a>
+                    <a :href="`mailto:` + user.emailLink" class="btn btn-default" target="_blank">
+                      <img :src="statics.gmailLogoUrl" height="20">
+                      <span class="hidden-xs">email</span>
+                    </a>
+                  </div>
+                  <div>
+                    <p>Зручні місця для зустрічі зі мною (Київ):</p>
+                    <ul>
+                      <li>м. Політехнічний інститут</li>
+                      <li>м. Університет</li>
+                      <li>м. Льва Толстого</li>
+                    </ul>
+                  </div>
+                  <div v-if="selectedBook.isRented" class="alert alert-warning">
+                    Ця книга зараз зайнята, але ти можеш записатися у чергу за нею.
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div style="text-align: center;">
+                <h3>{{selectedBook.title}}</h3>
+                <p>
+                  <b>
+                    <span>{{selectedBook.author}} </span>
+                  </b>
+                </p>
+                <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 80%;">
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- -->
     </div>
+  </div>
   </div>
   <script src="app.js"></script>
 </body>

@@ -92,6 +92,9 @@ const app = new Vue({
         toggleRented(e) {
             this.filters.showRented = !this.filters.showRented;
         },
+        reloadPage() {
+            location.reload();
+        },
         clearFilter(e) {
             this.filterString = ``;
         },

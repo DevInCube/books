@@ -1,16 +1,18 @@
 #app {
   max-width: 1920px;
 }
-.site-name {
-  color: darkslategrey;
-  font-weight: bold;
-}
 .site-name-xs {
   font-size: 24px;
 }
 #holder-box {
   margin-top: 20px;
   text-align: right;
+}
+.book-container {
+  margin: 3px;
+}
+.thumbnail { /* override bootstrap 3 */
+  margin-bottom: 0px !important;
 }
 .book-cover {
   text-align: center;
@@ -61,6 +63,33 @@
 	height: 70px;
 	margin-top: 3px;
 }
-.brand {
+.brand-link {
+  color: darkslategrey;
+  font-weight: bold;
   text-decoration: none; /* no underline */
+}
+.brand-link:hover {
+  text-decoration: none; /* no underline */
+}
+.brand-link:focus {
+  text-decoration: none; /* no underline */
+}
+.pages-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+.footer {
+  text-align: center;
+  margin-top: 32px;
+  height: 64px;
+}
+/* Important part */
+.modal-dialog {
+  overflow-y: initial !important
+}
+.modal-body {
+  height: 75vh;
+  overflow-y: auto;
 }
