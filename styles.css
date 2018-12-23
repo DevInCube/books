@@ -87,9 +87,9 @@
 }
 /* Important part */
 .modal-dialog {
-  overflow-y: initial !important
+  overflow-y: initial !important;
 }
 .modal-body {
-  height: 65vh;
+  height: 75vh;
   overflow-y: auto;
 }
