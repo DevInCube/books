@@ -22,7 +22,7 @@
   font-size: 16px;
   font-weight: bold;
 }
-.book-title, .book-author {
+.book-title, .book-author, .book-holder {
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -92,4 +92,10 @@
 .modal-body {
   height: 75vh;
   overflow-y: auto;
+}
+
+.holder-image {
+  border: 2px solid lightsteelblue;
+  border-radius: 50%;
+  height: 36px;
 }

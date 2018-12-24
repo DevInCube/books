@@ -129,11 +129,14 @@
                             <a href="#" @click="filterByContents" :title="book.author">{{book.author}}</a>
                           </b>
                         </p>
-                        <p>
-                          <small class="reviews">
-                            <a v-if="book.externalUrl" :href="book.externalUrl + `#tab-reviews`" target="_blank">Відгуки
-                              <small><span class="glyphicon glyphicon-new-window"></span></small></a>
-                            <span v-else class="text-muted">Відгуки відсутні</span>
+                        <p class="book-holder hidden-xs">
+                          <small>
+                            <a href="#" @click="filterByHolder" :title="book.holder.fullname">{{book.holder.fullname}}</a>
+                          </small>
+                        </p>
+                        <p class="visible-xs">
+                          <small>
+                            <a href="#" @click="filterByHolder" :title="book.holder.fullname">{{book.holder.fullname}}</a>
                           </small>
                         </p>
                         <p>
@@ -230,24 +233,18 @@
               <div v-if="selectedBook">
                 <div class="media">
                   <div class="media-left">
-                    <img :src="user.imageUrl" class="img-circle" height="32">
+                    <img :src="selectedBook.holder.profileImageUrl || statics.defaultProfileImageUrl" class="img-circle holder-image">
                   </div>
                   <div class="media-body">
-                    <h5 class="media-heading"><b>{{user.fullname}}</b></h5>
+                    <h5 class="media-heading"><b>{{selectedBook.holder.fullname}}</b> ({{selectedBook.holder.region}})</h5>
                     <p>Зв'яжись зі мною, щоб отримати книгу:</p>
                     <div id="contact-links" class="btn-group-horizontal" role="group">
-                      <a :href="user.telegramLink" class="btn btn-default" target="_blank">
-                        <img :src="statics.telegramLogoUrl" height="20">
-                        <span class="hidden-xs">Telegram</span>
-                      </a>
-                      <a :href="user.instagramLink" class="btn btn-default" target="_blank">
-                        <img :src="statics.instagramLogoUrl" height="20">
-                        <span class="hidden-xs">Instagram</span>
-                      </a>
-                      <a :href="`mailto:` + user.emailLink" class="btn btn-default" target="_blank">
-                        <img :src="statics.gmailLogoUrl" height="20">
-                        <span class="hidden-xs">email</span>
-                      </a>
+                      <span v-for="link of selectedBook.holder.links">
+                        <a :href="link.url" class="btn btn-default" target="_blank">
+                          <img :src="link.logoUrl" height="20">
+                          <span class="hidden-xs">{{link.serviceName}}</span>
+                        </a>
+                      </span>
                     </div>
                     <div v-if="selectedBook.isRented" class="alert alert-warning">
                       Цю книгу наразі читають. Напиши мені, щоб дізнатися, коли ти зможеш її отримати
@@ -261,6 +258,13 @@
                     <b>
                       <span>{{selectedBook.author}} </span>
                     </b>
+                  </p>
+                  <p>
+                    <small class="reviews">
+                      <a v-if="selectedBook.externalUrl" :href="selectedBook.externalUrl + `#tab-reviews`" target="_blank">Відгуки
+                        <small><span class="glyphicon glyphicon-new-window"></span></small></a>
+                      <span v-else class="text-muted">Відгуки відсутні</span>
+                    </small>
                   </p>
                   <img :src="selectedBook.coverUrl || statics.defaultCoverUrl" style="max-width: 100%; max-height: 80%;">
                 </div>

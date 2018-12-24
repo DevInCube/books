@@ -1,36 +1,37 @@
-function makeApiCall(sheetId, query) {
+function makeApiCall(sheetId, query, handlerName) {
     // Note: The below spreadsheet is "Public on the web" and will work
     // with or without an OAuth token.  For a better test, replace this
     // URL with a private spreadsheet.
     const encodedQuery = encodeURIComponent(query);
     const tqUrl = `https://docs.google.com/a/google.com` +
         `/spreadsheets/d/${sheetId}/gviz/tq` +
-        `?tqx=responseHandler:handleTqResponse` +
+        `?tqx=responseHandler:${handlerName}` +
         `&tq=${encodedQuery}`;
 
     document.write('<script src="' + tqUrl + '" type="text/javascript"></script>');
 }
 
-function parseBooks(resp) {
+function parseResponse(resp) {
     const headers = {};
     for (const [ci, col] of resp.table.cols.entries()) {
         headers[col.label] = ci;
     }
-    const books = [];
+    const items = [];
     for (const row of resp.table.rows) {
-        const book = {};
+        const item = {};
         for (const [key, pos] of Object.entries(headers)) {
-            book[key] = row.c[pos] ? row.c[pos].v : null;
+            item[key] = row.c[pos] ? row.c[pos].v : null;
         }
-        books.push(book)
+        items.push(item)
     }
-    return books;
+    return items;
 }
 
 const app = new Vue({
     el: '#app',
     data: {
         loading: true,
+        allHolders: [],
         allBooks: [],
         selectedBook: null,
         filterString: ``,
@@ -41,6 +42,7 @@ const app = new Vue({
         itemsPerPage: 12,
         statics: {
             defaultCoverUrl: `https://vignette.wikia.nocookie.net/summoner-the-novice/images/e/e2/Placeholder_02.png/revision/latest?cb=20180210125541`,
+            defaultProfileImageUrl: `images/user-default.png`,
             goodreadsLogoUrl: `https://images-eu.ssl-images-amazon.com/images/I/61Fkb1F2vOL.png`,
             telegramLogoUrl: `https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Telegram_alternative_logo.svg/384px-Telegram_alternative_logo.svg.png`,
             instagramLogoUrl: `https://instagram-brand.com/wp-content/uploads/2016/11/app-icon2.png`,
@@ -62,7 +64,8 @@ const app = new Vue({
             const filteredBooks = this.allBooks
                 .filter(x =>
                     (this.filters.showRented || !x.isRented)
-                    && (this.filterString.trim() === '' || `${x.title} ${x.author}`.toLowerCase().includes(this.filterString.toLowerCase())));
+                    && (this.filterString.trim() === '' 
+                        || `${x.title} ${x.author} ${x.holder.fullname}`.toLowerCase().includes(this.filterString.toLowerCase())));
             filteredBooks.sort((a, b) => ('' + a.title).localeCompare(b.title));
             return filteredBooks;
         },
@@ -82,11 +85,70 @@ const app = new Vue({
         notFound() { return !this.loading && this.filteredBooks.length === 0; }
     },
     mounted() {
-        makeApiCall(`14xSwU7g8-8F88IBdO2rhoH8PJ6BTJf0yqeThlKVX9mY`, `SELECT *`);
+        makeApiCall(`1ldXL8zCdfFbP1I_tt04I4AOjirGDIDJBTB2Xcucm-S4`, `SELECT *`, `handleUsersResponse`);
+
     },
     methods: {
+        setHolders(holders) {
+            this.allHolders = holders.filter(x => x.isEnabled);
+            const firstHolder = this.allHolders[0];
+            if (firstHolder) {
+                const linkPrefix = "link.";
+                for (const holder of this.allHolders) {
+                    holder.links = Object.entries(holder)
+                        .filter(([key, val]) => key.startsWith(linkPrefix) && val)
+                        .map(([key, val]) => ({
+                            service: key.substr(linkPrefix.length),
+                            id: val,
+                        }))
+                        .map(link => ({
+                            service: link.service,
+                            id: link.id,
+                            serviceName: getServiceName(link),
+                            url: getServiceUrl(link),
+                            logoUrl: getServiceLogoUrl(link),
+                        }));
+                }
+                console.log(this.allHolders);
+
+                function getServiceName(link) {
+                    switch (link.service) {
+                        case "telegram": return `Telegram`;
+                        case "email": return `email`;
+                        case "instagram": return `Instagram`;
+                        default: return `#`;
+                    }
+                }
+
+                function getServiceUrl(link) {
+                    switch (link.service) {
+                        case "telegram": return `https://t.me/${link.id}`;
+                        case "email": return `mailto:${link.id}`;
+                        case "instagram": return `https://www.instagram.com/${link.id}`;
+                        default: return `#`;
+                    }
+                }
+
+                function getServiceLogoUrl(link) {
+                    switch (link.service) {
+                        case "telegram": return app.statics.telegramLogoUrl;
+                        case "email": return app.statics.gmailLogoUrl;
+                        case "instagram": return app.statics.instagramLogoUrl;
+                        default: return `#`;
+                    }
+                }
+            }
+            
+            makeApiCall(`1DgBafRgaXklhdDGfMzJOBfTGvCwjjluW-LhWYhDuksQ`, `SELECT *`, `handleTqResponse`);
+        },
         setBooks(books) {
-            this.allBooks = books.filter(x => x.isAvailable);
+            for (const book of books.filter(x => x.isAvailable)) {
+                const holder = this.allHolders.find(x => x.id === book.holderId);
+                if (holder) {
+                    book.holder = holder;
+                    this.allBooks.push(book);
+                }
+            }
             this.loading = false;
         },
         toggleRented(e) {
@@ -102,6 +164,10 @@ const app = new Vue({
             const contents = e.target.innerText;
             this.filterString = contents.trim();
         },
+        filterByHolder(e) {
+            const contents = e.target.innerText;
+            this.filterString = contents.trim();
+        },
         selectBook(book) {
             this.selectedBook = book;
         },
@@ -113,7 +179,11 @@ const app = new Vue({
 });
 
 function handleTqResponse(resp) {
-    app.setBooks(parseBooks(resp));
+    app.setBooks(parseResponse(resp));
+}
+
+function handleUsersResponse(resp) {
+    app.setHolders(parseResponse(resp));
 }
 
 const aboutMd = `
