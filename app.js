@@ -86,7 +86,6 @@ const app = new Vue({
     },
     mounted() {
         makeApiCall(`1ldXL8zCdfFbP1I_tt04I4AOjirGDIDJBTB2Xcucm-S4`, `SELECT *`, `handleUsersResponse`);
-
     },
     methods: {
         setHolders(holders) {
@@ -142,7 +141,7 @@ const app = new Vue({
             makeApiCall(`1DgBafRgaXklhdDGfMzJOBfTGvCwjjluW-LhWYhDuksQ`, `SELECT *`, `handleTqResponse`);
         },
         setBooks(books) {
-            for (const book of books.filter(x => x.isAvailable)) {
+            for (const book of books.filter(x => validateBook(x))) {
                 const holder = this.allHolders.find(x => x.id === book.holderId);
                 if (holder) {
                     book.holder = holder;
@@ -150,6 +149,13 @@ const app = new Vue({
                 }
             }
             this.loading = false;
+
+            function validateBook(book) {
+                return book.isAvailable
+                    && book.author
+                    && book.title
+                    && book.holderId;
+            }
         },
         toggleRented(e) {
             this.filters.showRented = !this.filters.showRented;
